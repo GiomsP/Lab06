@@ -23,7 +23,6 @@ public class JuegosDeAzarGUI extends JFrame {
         timers = new Timer[3];
         currentIndex = new int[3];
 
-
         String[] opciones = {"Jugar Dados", "Jugar Tragamonedas", "Ambos Juegos"};
         int seleccion = JOptionPane.showOptionDialog(
             null,
@@ -35,7 +34,6 @@ public class JuegosDeAzarGUI extends JFrame {
             opciones,
             opciones[0]
         );
-
 
         if (seleccion == 0) {
             iniciarJuegoDeDados();
@@ -51,14 +49,21 @@ public class JuegosDeAzarGUI extends JFrame {
         for (int i = 1; i <= 5; i++) { // 5 tiradas
             int dado1 = random.nextInt(6) + 1; // Número entre 1 y 6
             int dado2 = random.nextInt(6) + 1;
+            int suma = dado1 + dado2;
             resultado.append("Tirada ").append(i)
                 .append(": Dado 1 = ").append(dado1)
                 .append(", Dado 2 = ").append(dado2)
-                .append(" (Suma: ").append(dado1 + dado2).append(")\n");
+                .append(" (Suma: ").append(suma).append(")");
+
+     
+            if (suma == 7 || suma == 11) {
+                resultado.append(" -> ¡Ganaste!\n");
+            } else {
+                resultado.append(" -> Perdiste.\n");
+            }
         }
         JOptionPane.showMessageDialog(this, resultado.toString(), "Resultado del Juego de Dados", JOptionPane.INFORMATION_MESSAGE);
     }
-
 
     private void iniciarTragamonedas() {
         // Mostrar el tragamonedas en una nueva ventana
@@ -71,6 +76,7 @@ public class JuegosDeAzarGUI extends JFrame {
         JPanel mainPanel = new JPanel(new BorderLayout());
         JPanel rodillosPanel = new JPanel(new GridLayout(1, 3, 10, 0));
 
+   
         for (int i = 0; i < 3; i++) {
             rodillos[i] = new JPanel();
             rodillos[i].setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
@@ -87,6 +93,7 @@ public class JuegosDeAzarGUI extends JFrame {
                 }
             });
         }
+
 
         botonGirar = new JButton("GIRAR");
         botonGirar.setFont(new Font("Dialog", Font.BOLD, 20));
@@ -133,9 +140,13 @@ public class JuegosDeAzarGUI extends JFrame {
         girando = false;
         botonGirar.setEnabled(true);
 
+  
         if (currentIndex[0] == currentIndex[1] && currentIndex[1] == currentIndex[2]) {
             JOptionPane.showMessageDialog(this, "¡FELICIDADES! ¡GANASTE!",
-                "Victoria", JOptionPane.INFORMATION_MESSAGE);
+                "Resultado", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "Lo siento, perdiste.",
+                "Resultado", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
